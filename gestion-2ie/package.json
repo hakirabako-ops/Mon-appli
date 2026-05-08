@@ -1,0 +1,26 @@
+{
+  "name": "gestion-2ie",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^8.0.10"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.2.0",
+    "@fortawesome/free-solid-svg-icons": "^7.2.0",
+    "@fortawesome/react-fontawesome": "^3.3.1",
+    "bootstrap": "^5.3.8",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "papaparse": "^5.5.3",
+    "react-bootstrap": "^2.10.10",
+    "react-router-dom": "^7.14.2",
+    "xlsx": "^0.18.5"
+  }
+}
