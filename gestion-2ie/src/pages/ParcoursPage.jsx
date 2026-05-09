@@ -8,7 +8,7 @@ const parcoursConfig = {
   title: 'Parcours',
   category: 'Ressources',
   singular: 'parcours',
-  description: 'Composez les parcours avec une specialite, un niveau et les credits requis.',
+  description: 'Composez les parcours avec une spécialité, un niveau et les crédits requis.',
   listTitle: 'Liste des parcours',
   service: parcoursService,
   pagination: { enabled: true, pageSize: 25 },
@@ -16,16 +16,16 @@ const parcoursConfig = {
     etudiants: { field: 'parcours_id', service: etudiantsService },
   },
   fields: [
-    { name: 'libelle', label: 'Libelle', required: true },
-    { name: 'specialites_id', label: 'Specialite', type: 'select', service: specialitesService, required: true },
-    { name: 'niveaux_id', label: 'Niveau', type: 'select', service: niveauxService, required: true },
-    { name: 'credits_requis', label: 'Credits requis', type: 'number', placeholder: '30' },
+    { name: 'libelle',         label: 'Libellé',         required: true },
+    { name: 'specialites_id',  label: 'Spécialité',      type: 'select', service: specialitesService, required: true },
+    { name: 'niveaux_id',      label: 'Niveau',          type: 'select', service: niveauxService, required: true },
+    { name: 'credits_requis',  label: 'Crédits requis',  type: 'number', placeholder: '30' },
   ],
   columns: [
-    { name: 'libelle', label: 'Libelle' },
-    { name: 'specialites_id', label: 'Specialite', optionField: 'specialites_id' },
-    { name: 'niveaux_id', label: 'Niveau', optionField: 'niveaux_id' },
-    { name: 'credits_requis', label: 'Credits' },
+    { name: 'libelle',        label: 'Libellé' },
+    { name: 'specialites_id', label: 'Spécialité', optionField: 'specialites_id' },
+    { name: 'niveaux_id',     label: 'Niveau',     optionField: 'niveaux_id' },
+    { name: 'credits_requis', label: 'Crédits' },
   ],
 };
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBookOpen,
@@ -136,56 +136,13 @@ export default function Dashboard() {
     const yearLabel = stats?.anneeAcademique?.libelle || 'Toutes annees';
 
     return [
-      { 
-        label: 'Etudiants', 
-        value: stats?.etudiants, 
-        sub: 'Total etudiants', 
-        iconClass: 'stat-icon-blue', 
-        icon: faGraduationCap 
-      },
-      { 
-        label: 'Ecoles', 
-        value: stats?.ecoles, 
-        sub: 'Etablissements', 
-        iconClass: 'stat-icon-amber', 
-        icon: faSchool 
-      },
-      { 
-        label: 'Filieres', 
-        value: stats?.filieres, 
-        sub: 'Programmes', 
-        iconClass: 'stat-icon-green', 
-        icon: faBookOpen 
-      },
-      { 
-        label: 'Inscriptions', 
-        value: stats?.inscriptions, 
-        sub: yearLabel, 
-        iconClass: 'stat-icon-red', 
-        icon: faClipboardList 
-      },
-      { 
-        label: 'Classes', 
-        value: stats?.classes || 0, 
-        sub: 'Groupes d\'étudiants', 
-        iconClass: 'stat-icon-purple', 
-        icon: faUsers 
-      },
-      { 
-        label: 'Notes', 
-        value: stats?.notes || 0, 
-        sub: 'Évaluations saisies', 
-        iconClass: 'stat-icon-teal', 
-        icon: faFileAlt 
-      },
-      { 
-        label: 'Total Encaissé', 
-        value: stats?.montantPaye || 0, 
-        sub: yearLabel, 
-        iconClass: 'stat-icon-green', 
-        icon: faMoneyBillWave,
-        isMoney: true
-      },
+      { label: 'Étudiants',      value: stats?.etudiants,         sub: 'Total étudiants',     iconClass: 'stat-icon-blue',   icon: faGraduationCap, to: '/ressources/etudiants' },
+      { label: 'Écoles',         value: stats?.ecoles,            sub: 'Établissements',       iconClass: 'stat-icon-amber',  icon: faSchool,        to: '/ressources/ecole' },
+      { label: 'Filières',       value: stats?.filieres,          sub: 'Programmes',           iconClass: 'stat-icon-green',  icon: faBookOpen,      to: '/ressources/filieres' },
+      { label: 'Inscriptions',   value: stats?.inscriptions,      sub: yearLabel,              iconClass: 'stat-icon-red',    icon: faClipboardList, to: '/ressources/inscriptions' },
+      { label: 'Classes',        value: stats?.classes || 0,      sub: "Groupes d'étudiants",  iconClass: 'stat-icon-purple', icon: faUsers,         to: '/ressources/classes' },
+      { label: 'Notes',          value: stats?.notes || 0,        sub: 'Évaluations saisies',  iconClass: 'stat-icon-teal',   icon: faFileAlt,       to: '/ressources/notes' },
+      { label: 'Total encaissé', value: stats?.montantPaye || 0,  sub: yearLabel,              iconClass: 'stat-icon-green',  icon: faMoneyBillWave, to: '/ressources/paiements', isMoney: true },
     ];
   }, [stats]);
 
@@ -233,23 +190,25 @@ export default function Dashboard() {
       {error && <div className="feedback feedback-error">{error}</div>}
       {message && <div className="feedback feedback-success">{message}</div>}
 
-      <div className="dashboard-stats" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+      <div className="dashboard-stats">
         {statCards.map((s) => (
-          <div key={s.label} className="stat-card">
-            <div className={`stat-card-icon ${s.iconClass}`}>
-              <FontAwesomeIcon icon={s.icon} aria-hidden="true" />
+          <Link key={s.label} to={s.to} className="stat-card-link">
+            <div className="stat-card">
+              <div className={`stat-card-icon ${s.iconClass}`}>
+                <FontAwesomeIcon icon={s.icon} aria-hidden="true" />
+              </div>
+              <div className="stat-card-label">{s.label}</div>
+              <div className="stat-card-value">{formatStatValue(s)}</div>
+              <div className="stat-card-sub">{s.sub}</div>
             </div>
-            <div className="stat-card-label">{s.label}</div>
-            <div className="stat-card-value">{formatStatValue(s)}</div>
-            <div className="stat-card-sub">{s.sub}</div>
-          </div>
+          </Link>
         ))}
       </div>
 
       <div className="dashboard-grid dashboard-grid-main">
         <div className="card">
           <div className="card-title">
-            <FontAwesomeIcon icon={faChartLine} style={{ marginRight: '8px' }} />
+            <FontAwesomeIcon icon={faChartLine} aria-hidden="true" />
             Inscriptions par annee academique
           </div>
           {loading ? <div className="empty-state"><Spinner size="sm" text="Chargement..." /></div> : (
@@ -259,7 +218,7 @@ export default function Dashboard() {
 
         <div className="card">
           <div className="card-title">
-            <FontAwesomeIcon icon={faBookOpen} style={{ marginRight: '8px' }} />
+            <FontAwesomeIcon icon={faBookOpen} aria-hidden="true" />
             Top 5 filieres demandees
           </div>
           {loading ? <div className="empty-state"><Spinner size="sm" text="Chargement..." /></div> : (
@@ -271,7 +230,7 @@ export default function Dashboard() {
       <div className="dashboard-grid dashboard-grid-main">
         <div className="card">
           <div className="card-title">
-            <FontAwesomeIcon icon={faGraduationCap} style={{ marginRight: '8px' }} />
+            <FontAwesomeIcon icon={faGraduationCap} aria-hidden="true" />
             Repartition etudiants par cycle
           </div>
           {loading ? (
@@ -291,7 +250,7 @@ export default function Dashboard() {
 
         <div className="card">
           <div className="card-title">
-            <FontAwesomeIcon icon={faMoneyBillWave} style={{ marginRight: '8px' }} />
+            <FontAwesomeIcon icon={faMoneyBillWave} aria-hidden="true" />
             Statut des paiements
           </div>
           {loading ? <div className="empty-state"><Spinner size="sm" text="Chargement..." /></div> : (
@@ -346,17 +305,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Ajout de styles CSS supplémentaires pour les nouvelles cartes */}
-      <style jsx>{`
-        .stat-icon-purple {
-          background: #f3e8ff;
-          color: #9333ea;
-        }
-        .stat-icon-teal {
-          background: #ccfbf1;
-          color: #0d9488;
-        }
-      `}</style>
     </>
   );
 }

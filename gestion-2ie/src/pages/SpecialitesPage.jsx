@@ -4,24 +4,24 @@ import { specialitesService } from '../services/specialitesService';
 import { parcoursService } from '../services/parcoursService';
 
 const specialitesConfig = {
-  title: 'Specialites',
+  title: 'Spécialités',
   category: 'Ressources',
-  singular: 'specialite',
-  description: 'Rattachez les specialites aux filieres.',
-  listTitle: 'Liste des specialites',
+  singular: 'spécialité',
+  description: 'Rattachez les spécialités aux filières.',
+  listTitle: 'Liste des spécialités',
   service: specialitesService,
   pagination: { enabled: true, pageSize: 25 },
   dependencies: {
     parcours: { field: 'specialites_id', service: parcoursService },
   },
   fields: [
-    { name: 'libelle', label: 'Libelle', required: true },
-    { name: 'filieres_id', label: 'Filiere', type: 'select', service: filieresService, required: true },
+    { name: 'libelle',     label: 'Libellé',    required: true },
+    { name: 'filieres_id', label: 'Filière',    type: 'select', service: filieresService, required: true },
     { name: 'description', label: 'Description', type: 'textarea' },
   ],
   columns: [
-    { name: 'libelle', label: 'Libelle' },
-    { name: 'filieres_id', label: 'Filiere', optionField: 'filieres_id' },
+    { name: 'libelle',     label: 'Libellé' },
+    { name: 'filieres_id', label: 'Filière',    optionField: 'filieres_id' },
     { name: 'description', label: 'Description' },
   ],
 };

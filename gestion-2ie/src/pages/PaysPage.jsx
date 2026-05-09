@@ -5,17 +5,17 @@ const paysConfig = {
   title: 'Pays',
   category: 'Ressources',
   singular: 'pays',
-  description: 'Gerez le catalogue des pays utilises dans les formulaires.',
+  description: 'Gérez le catalogue des pays utilisés dans les formulaires.',
   listTitle: 'Liste des pays',
   service: paysService,
   pagination: { enabled: true, pageSize: 25 },
   fields: [
-    { name: 'libelle', label: 'Libelle', required: true },
-    { name: 'code', label: 'Code', placeholder: 'BFA' },
+    { name: 'libelle', label: 'Libellé', required: true },
+    { name: 'code',    label: 'Code',    placeholder: 'BFA' },
   ],
   columns: [
-    { name: 'libelle', label: 'Libelle' },
-    { name: 'code', label: 'Code' },
+    { name: 'libelle', label: 'Libellé' },
+    { name: 'code',    label: 'Code' },
   ],
 };
 

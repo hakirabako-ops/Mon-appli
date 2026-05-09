@@ -2,19 +2,19 @@ import CrudPage from '../components/CrudPage';
 import { decisionsService } from '../services/decisionsService';
 
 const decisionsConfig = {
-  title: 'Decisions',
+  title: 'Décisions',
   category: 'Ressources',
-  singular: 'decision',
-  description: 'Gerez les decisions utilisees pendant les inscriptions.',
-  listTitle: 'Liste des decisions',
+  singular: 'décision',
+  description: 'Gérez les décisions utilisées lors des inscriptions.',
+  listTitle: 'Liste des décisions',
   service: decisionsService,
   pagination: { enabled: true, pageSize: 25 },
   fields: [
-    { name: 'libelle', label: 'Libelle', required: true },
+    { name: 'libelle',     label: 'Libellé',    required: true },
     { name: 'description', label: 'Description', type: 'textarea' },
   ],
   columns: [
-    { name: 'libelle', label: 'Libelle' },
+    { name: 'libelle',     label: 'Libellé' },
     { name: 'description', label: 'Description' },
   ],
 };

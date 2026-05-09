@@ -1,5 +1,4 @@
-// pages/AjoutEtudiantPage.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faUndo, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { etudiantsService } from '../services/etudiantsService';
@@ -7,7 +6,17 @@ import { civilitesService } from '../services/civilitesService';
 import { paysService } from '../services/paysService';
 import { useToast } from '../hooks/useToast';
 import ToastNotification from '../components/ToastNotification';
-import Spinner from '../components/Spinner';
+import PageLoader from '../components/PageLoader';
+
+const EMPTY_FORM = {
+  nom: '',
+  prenoms: '',
+  civilites_id: '',
+  pays_id: '',
+  date_naissance: '',
+  email: '',
+  telephone: '',
+};
 
 export default function AjoutEtudiantPage() {
   const { toast, showSuccess, showError, closeToast } = useToast();
@@ -15,18 +24,9 @@ export default function AjoutEtudiantPage() {
   const [saving, setSaving] = useState(false);
   const [civilites, setCivilites] = useState([]);
   const [pays, setPays] = useState([]);
-  const [form, setForm] = useState({
-    nom: '',
-    prenoms: '',
-    civilites_id: '',
-    pays_id: '',
-    date_naissance: '',
-    email: '',
-    telephone: '',
-  });
+  const [form, setForm] = useState(EMPTY_FORM);
 
-  // Charger les listes déroulantes
-  useState(() => {
+  useEffect(() => {
     async function loadOptions() {
       setLoading(true);
       try {
@@ -45,60 +45,30 @@ export default function AjoutEtudiantPage() {
     loadOptions();
   }, []);
 
-  const handleChange = (e) => {
+  function handleChange(e) {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
-  };
+    setForm((prev) => ({ ...prev, [name]: value }));
+  }
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    
-    // Validation
     if (!form.nom || !form.prenoms || !form.civilites_id || !form.pays_id) {
       showError('Veuillez remplir tous les champs obligatoires.');
       return;
     }
-
     setSaving(true);
     try {
       await etudiantsService.create(form);
       showSuccess('Étudiant ajouté avec succès !');
-      // Réinitialiser le formulaire
-      setForm({
-        nom: '',
-        prenoms: '',
-        civilites_id: '',
-        pays_id: '',
-        date_naissance: '',
-        email: '',
-        telephone: '',
-      });
+      setForm(EMPTY_FORM);
     } catch (err) {
       showError(err.message);
     } finally {
       setSaving(false);
     }
-  };
-
-  const handleReset = () => {
-    setForm({
-      nom: '',
-      prenoms: '',
-      civilites_id: '',
-      pays_id: '',
-      date_naissance: '',
-      email: '',
-      telephone: '',
-    });
-  };
-
-  if (loading) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '50px' }}>
-        <Spinner size="lg" text="Chargement..." />
-      </div>
-    );
   }
+
+  if (loading) return <PageLoader />;
 
   return (
     <>
@@ -106,20 +76,21 @@ export default function AjoutEtudiantPage() {
         <div>
           <p className="page-eyebrow">Gestion Étudiants</p>
           <h1 className="page-title">
-            <FontAwesomeIcon icon={faUserPlus} style={{ marginRight: '12px' }} />
-            Ajouter un étudiant
+            <FontAwesomeIcon icon={faUserPlus} />
+            {' '}Ajouter un étudiant
           </h1>
           <p className="page-desc">Enregistrez un nouvel étudiant dans le système.</p>
         </div>
       </div>
 
-      <div className="form-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <div className="form-card-title">Formulaire d'inscription</div>
+      <div className="form-card form-card--centered">
+        <div className="form-card-title">Informations de l'étudiant</div>
         <form onSubmit={handleSubmit}>
           <div className="form-grid">
             <div className="form-field">
-              <label className="form-label">Civilité *</label>
+              <label className="form-label" htmlFor="civilites_id">Civilité *</label>
               <select
+                id="civilites_id"
                 name="civilites_id"
                 value={form.civilites_id}
                 onChange={handleChange}
@@ -127,15 +98,16 @@ export default function AjoutEtudiantPage() {
                 required
               >
                 <option value="">Sélectionner</option>
-                {civilites.map(c => (
+                {civilites.map((c) => (
                   <option key={c.id} value={c.id}>{c.libelle}</option>
                 ))}
               </select>
             </div>
 
             <div className="form-field">
-              <label className="form-label">Pays *</label>
+              <label className="form-label" htmlFor="pays_id">Pays *</label>
               <select
+                id="pays_id"
                 name="pays_id"
                 value={form.pays_id}
                 onChange={handleChange}
@@ -143,15 +115,16 @@ export default function AjoutEtudiantPage() {
                 required
               >
                 <option value="">Sélectionner</option>
-                {pays.map(p => (
+                {pays.map((p) => (
                   <option key={p.id} value={p.id}>{p.libelle}</option>
                 ))}
               </select>
             </div>
 
             <div className="form-field">
-              <label className="form-label">Nom *</label>
+              <label className="form-label" htmlFor="nom">Nom *</label>
               <input
+                id="nom"
                 type="text"
                 name="nom"
                 value={form.nom}
@@ -163,8 +136,9 @@ export default function AjoutEtudiantPage() {
             </div>
 
             <div className="form-field">
-              <label className="form-label">Prénoms *</label>
+              <label className="form-label" htmlFor="prenoms">Prénoms *</label>
               <input
+                id="prenoms"
                 type="text"
                 name="prenoms"
                 value={form.prenoms}
@@ -176,8 +150,9 @@ export default function AjoutEtudiantPage() {
             </div>
 
             <div className="form-field">
-              <label className="form-label">Date de naissance</label>
+              <label className="form-label" htmlFor="date_naissance">Date de naissance</label>
               <input
+                id="date_naissance"
                 type="date"
                 name="date_naissance"
                 value={form.date_naissance}
@@ -187,8 +162,9 @@ export default function AjoutEtudiantPage() {
             </div>
 
             <div className="form-field">
-              <label className="form-label">Email</label>
+              <label className="form-label" htmlFor="email">Email</label>
               <input
+                id="email"
                 type="email"
                 name="email"
                 value={form.email}
@@ -199,8 +175,9 @@ export default function AjoutEtudiantPage() {
             </div>
 
             <div className="form-field">
-              <label className="form-label">Téléphone</label>
+              <label className="form-label" htmlFor="telephone">Téléphone</label>
               <input
+                id="telephone"
                 type="tel"
                 name="telephone"
                 value={form.telephone}
@@ -213,12 +190,12 @@ export default function AjoutEtudiantPage() {
 
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={saving}>
-              <FontAwesomeIcon icon={faSave} style={{ marginRight: '8px' }} />
-              {saving ? 'Enregistrement...' : 'Enregistrer l\'étudiant'}
+              <FontAwesomeIcon icon={faSave} />
+              {' '}{saving ? 'Enregistrement...' : "Enregistrer l'étudiant"}
             </button>
-            <button type="button" className="btn-secondary" onClick={handleReset}>
-              <FontAwesomeIcon icon={faUndo} style={{ marginRight: '8px' }} />
-              Réinitialiser
+            <button type="button" className="btn-secondary" onClick={() => setForm(EMPTY_FORM)}>
+              <FontAwesomeIcon icon={faUndo} />
+              {' '}Réinitialiser
             </button>
           </div>
         </form>

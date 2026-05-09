@@ -2,20 +2,20 @@ import CrudPage from '../components/CrudPage';
 import { civilitesService } from '../services/civilitesService';
 
 const civilitesConfig = {
-  title: 'Civilites',
+  title: 'Civilités',
   category: 'Ressources',
-  singular: 'civilite',
-  description: 'Gerez les civilites proposees dans les fiches etudiants.',
-  listTitle: 'Liste des civilites',
+  singular: 'civilité',
+  description: 'Gérez les civilités proposées dans les fiches étudiants.',
+  listTitle: 'Liste des civilités',
   service: civilitesService,
   pagination: { enabled: true, pageSize: 25 },
   fields: [
-    { name: 'libelle', label: 'Libelle', required: true },
-    { name: 'abreviation', label: 'Abreviation', placeholder: 'M.' },
+    { name: 'libelle',      label: 'Libellé',      required: true },
+    { name: 'abreviation',  label: 'Abréviation',  placeholder: 'M.' },
   ],
   columns: [
-    { name: 'libelle', label: 'Libelle' },
-    { name: 'abreviation', label: 'Abreviation' },
+    { name: 'libelle',     label: 'Libellé' },
+    { name: 'abreviation', label: 'Abréviation' },
   ],
 };
 

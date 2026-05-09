@@ -1,32 +1,38 @@
-// SidebarLayout.jsx
 import { NavLink, Outlet } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGraduationCap, faDownload } from '@fortawesome/free-solid-svg-icons'; // 👈 Ajoute faDownload
+import {
+  faGraduationCap, faDownload, faGauge,
+  faSchool, faUserGraduate, faBookOpen, faArrowsRotate,
+  faFlask, faLayerGroup, faUsers, faRoute,
+  faClipboardList, faMoneyBillWave, faEarthAfrica,
+  faIdCard, faGavel, faCalendarDays, faFileSignature,
+  faUserPlus, faPenToSquare, faListUl, faAward,
+} from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../context/AuthContext';
 
 const resourceLinks = [
-  { label: 'Ecole', to: '/ressources/ecole' },
-  { label: 'Etudiants', to: '/ressources/etudiants' },
-  { label: 'Filieres', to: '/ressources/filieres' },
-  { label: 'Cycles', to: '/ressources/cycles' },
-  { label: 'Specialites', to: '/ressources/specialites' },
-  { label: 'Niveaux', to: '/ressources/niveaux' },
-  { label: 'Classes', to: '/ressources/classes' },
-  { label: 'Parcours', to: '/ressources/parcours' },
-  { label: 'Notes', to: '/ressources/notes' },
-  { label: 'Paiements', to: '/ressources/paiements' },
-  { label: 'Pays', to: '/ressources/pays' },
-  { label: 'Civilites', to: '/ressources/civilites' },
-  { label: 'Decisions', to: '/ressources/decisions' },
-  { label: 'Annees Academiques', to: '/ressources/annees-academiques' },
-  { label: 'Inscriptions', to: '/ressources/inscriptions' },
+  { label: 'Écoles',             to: '/ressources/ecole',              icon: faSchool },
+  { label: 'Étudiants',          to: '/ressources/etudiants',          icon: faUserGraduate },
+  { label: 'Filières',           to: '/ressources/filieres',           icon: faBookOpen },
+  { label: 'Cycles',             to: '/ressources/cycles',             icon: faArrowsRotate },
+  { label: 'Spécialités',        to: '/ressources/specialites',        icon: faFlask },
+  { label: 'Niveaux',            to: '/ressources/niveaux',            icon: faLayerGroup },
+  { label: 'Classes',            to: '/ressources/classes',            icon: faUsers },
+  { label: 'Parcours',           to: '/ressources/parcours',           icon: faRoute },
+  { label: 'Notes',              to: '/ressources/notes',              icon: faClipboardList },
+  { label: 'Paiements',          to: '/ressources/paiements',          icon: faMoneyBillWave },
+  { label: 'Pays',               to: '/ressources/pays',               icon: faEarthAfrica },
+  { label: 'Civilités',          to: '/ressources/civilites',          icon: faIdCard },
+  { label: 'Décisions',          to: '/ressources/decisions',          icon: faGavel },
+  { label: 'Années académiques', to: '/ressources/annees-academiques', icon: faCalendarDays },
+  { label: 'Inscriptions',       to: '/ressources/inscriptions',       icon: faFileSignature },
 ];
 
 const studentLinks = [
-  { label: 'Ajouter Etudiants', to: '/gestion-etudiants/ajouter-etudiants' },
-  { label: 'Inscrire Etudiants', to: '/gestion-etudiants/inscrire-etudiants' },
-  { label: 'Listes Etudiants', to: '/gestion-etudiants/listes-etudiants' },
-  { label: "Certificat d'Inscription", to: '/gestion-etudiants/editer-certificat-inscription' },
+  { label: 'Ajouter un étudiant',       to: '/gestion-etudiants/ajouter-etudiants',         icon: faUserPlus },
+  { label: 'Inscrire un étudiant',      to: '/gestion-etudiants/inscrire-etudiants',         icon: faPenToSquare },
+  { label: 'Listes des étudiants',      to: '/gestion-etudiants/listes-etudiants',           icon: faListUl },
+  { label: "Certificat d'inscription",  to: '/gestion-etudiants/editer-certificat-inscription', icon: faAward },
 ];
 
 function SidebarGroup({ title, links }) {
@@ -39,6 +45,9 @@ function SidebarGroup({ title, links }) {
           to={link.to}
           className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`}
         >
+          {link.icon && (
+            <FontAwesomeIcon icon={link.icon} className="sidebar-link-icon" aria-hidden="true" />
+          )}
           {link.label}
         </NavLink>
       ))}
@@ -48,7 +57,7 @@ function SidebarGroup({ title, links }) {
 
 function getInitials(name) {
   if (!name) return 'U';
-  return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+  return name.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -79,28 +88,21 @@ export default function SidebarLayout() {
             to="/dashboard"
             className={({ isActive }) => `sidebar-link${isActive ? ' active' : ''}`}
           >
+            <FontAwesomeIcon icon={faGauge} className="sidebar-link-icon" aria-hidden="true" />
             Tableau de bord
           </NavLink>
+
           <SidebarGroup title="Ressources" links={resourceLinks} />
-          <SidebarGroup title="Gestion Etudiants" links={studentLinks} />
-          
-          {/* 🟢 NOUVEAU : Groupe Exportations */}
+          <SidebarGroup title="Gestion Étudiants" links={studentLinks} />
+
           <div className="sidebar-group">
             <p className="sidebar-group-label">Exportations</p>
-            <button 
-              onClick={() => handleExport('/api/export/etudiants/csv')}
-              className="sidebar-link"
-              style={{ width: '100%', textAlign: 'left', background: 'transparent', border: 'none', cursor: 'pointer' }}
-            >
-              <FontAwesomeIcon icon={faDownload} aria-hidden="true" />
+            <button onClick={() => handleExport('/api/export/etudiants/csv')} className="sidebar-export-btn">
+              <FontAwesomeIcon icon={faDownload} className="sidebar-link-icon" aria-hidden="true" />
               Export Étudiants CSV
             </button>
-            <button 
-              onClick={() => handleExport('/api/export/etudiants/excel')}
-              className="sidebar-link"
-              style={{ width: '100%', textAlign: 'left', background: 'transparent', border: 'none', cursor: 'pointer' }}
-            >
-              <FontAwesomeIcon icon={faDownload} aria-hidden="true" />
+            <button onClick={() => handleExport('/api/export/etudiants/excel')} className="sidebar-export-btn">
+              <FontAwesomeIcon icon={faDownload} className="sidebar-link-icon" aria-hidden="true" />
               Export Étudiants Excel
             </button>
           </div>
